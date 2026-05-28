@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model WorkType {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  isActive  Boolean  @default(true) @map("is_active")
+
+  workLogEntries WorkLogEntry[]
+
+  @@map("work_types")
+}
+
+model Unit {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  isActive  Boolean  @default(true) @map("is_active")
+
+  workLogEntries WorkLogEntry[]
+
+  @@map("units")
+}
+
+model WorkLogEntry {
+  id            String    @id @default(uuid())
+  date          DateTime  @db.Date
+  workTypeId    String    @map("work_type_id")
+  unitId        String    @map("unit_id")
+  volume        Decimal   @db.Decimal(12, 3)
+  performerName String    @map("performer_name")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  workType WorkType @relation(fields: [workTypeId], references: [id])
+  unit     Unit     @relation(fields: [unitId], references: [id])
+
+  @@index([date])
+  @@index([workTypeId])
+  @@index([unitId])
+  @@map("work_log_entries")
+}
