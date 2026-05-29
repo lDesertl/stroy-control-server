@@ -15,7 +15,7 @@ datasource db {
 
 model WorkType {
   id        String   @id @default(uuid())
-  name      String   @unique
+  name      String   @unique @db.VarChar(255)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   isActive  Boolean  @default(true) @map("is_active")
@@ -27,7 +27,7 @@ model WorkType {
 
 model Unit {
   id        String   @id @default(uuid())
-  name      String   @unique
+  name      String   @unique @db.VarChar(255)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   isActive  Boolean  @default(true) @map("is_active")
@@ -43,7 +43,7 @@ model WorkLogEntry {
   workTypeId    String    @map("work_type_id")
   unitId        String    @map("unit_id")
   volume        Decimal   @db.Decimal(12, 3)
-  performerName String    @map("performer_name")
+  performerName String    @map("performer_name") @db.VarChar(255)
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
   deletedAt     DateTime? @map("deleted_at")

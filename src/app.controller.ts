@@ -1,5 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
-// biome-ignore lint/style/useImportType: <>
+
+// biome-ignore lint/style/useImportType: <не тип>
 import { AppService } from "./app.service";
 
 @Controller()

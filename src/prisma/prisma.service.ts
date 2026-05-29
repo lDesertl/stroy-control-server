@@ -3,7 +3,10 @@ import {
 	type OnModuleDestroy,
 	type OnModuleInit,
 } from "@nestjs/common";
+// biome-ignore lint/style/useImportType: <не тип>
+import { ConfigService } from "@nestjs/config";
 import { PrismaPg } from "@prisma/adapter-pg";
+
 import { Pool } from "pg";
 import { PrismaClient } from "../../generated/prisma/client.js";
 
@@ -14,8 +17,10 @@ export class PrismaService
 {
 	private readonly pool: Pool;
 
-	constructor() {
-		const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+	constructor(configService: ConfigService) {
+		const pool = new Pool({
+			connectionString: configService.get<string>("DATABASE_URL"),
+		});
 		super({ adapter: new PrismaPg(pool) });
 		this.pool = pool;
 	}
