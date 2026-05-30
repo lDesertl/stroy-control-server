@@ -1,0 +1,22 @@
+meta {
+  name: create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/units
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "test8"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

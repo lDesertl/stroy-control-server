@@ -1,19 +1,9 @@
-import {
-	IsBoolean,
-	IsNotEmpty,
-	IsOptional,
-	IsString,
-	MaxLength,
-} from "class-validator";
+import { PartialType } from "@nestjs/mapped-types";
+import { IsBoolean, IsOptional } from "class-validator";
+import { CreateUnitDto } from "./create-unit.dto";
 
-export class UpdateUnitDto {
-	@MaxLength(255)
-	@IsString()
-	@IsNotEmpty()
-	name: string;
-
+export class UpdateUnitDto extends PartialType(CreateUnitDto) {
 	@IsOptional()
 	@IsBoolean()
-	@IsNotEmpty()
-	isActive: boolean;
+	isActive?: boolean;
 }

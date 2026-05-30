@@ -1,0 +1,27 @@
+meta {
+  name: update
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/units/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 019e795f-ac55-7528-a429-36d1bc07c4b4
+}
+
+body:json {
+  {
+    "name" : "name",
+    "isActive": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
