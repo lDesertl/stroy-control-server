@@ -1,0 +1,30 @@
+meta {
+  name: update
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/work-log-entries/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 019e7df0-0cf0-75c9-83f8-2cd038f601d0
+}
+
+body:json {
+  {
+    "date": "2026-01-01",
+    "workTypeId": "019e7876-5fb3-747c-adf5-908422a2c5df",
+    "unitId": "019e7876-5fb2-75ff-97ff-db8cf40eaec5",
+    "volume": "10",
+    "performerName": "Иванов Т.Т."
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

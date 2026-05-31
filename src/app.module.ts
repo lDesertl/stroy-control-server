@@ -6,8 +6,9 @@ import { AppService } from "./app.service";
 import { envValidationSchema } from "./config/env-validation";
 import { HealthController } from "./health/health.controller";
 import { PrismaModule } from "./prisma/prisma.module";
-import { UnitsModule } from './units/units.module';
-import { WorkTypesModule } from './work-types/work-types.module';
+import { UnitsModule } from "./units/units.module";
+import { WorkTypesModule } from "./work-types/work-types.module";
+import { WorkLogEntriesModule } from "./work-log-entries/work-log-entries.module";
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { WorkTypesModule } from './work-types/work-types.module';
 		PrismaModule,
 		UnitsModule,
 		WorkTypesModule,
+		WorkLogEntriesModule,
 	],
 	controllers: [AppController, HealthController],
 	providers: [AppService],
