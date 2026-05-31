@@ -7,6 +7,7 @@ import { envValidationSchema } from "./config/env-validation";
 import { HealthController } from "./health/health.controller";
 import { PrismaModule } from "./prisma/prisma.module";
 import { UnitsModule } from './units/units.module';
+import { WorkTypesModule } from './work-types/work-types.module';
 
 @Module({
 	imports: [
@@ -16,6 +17,7 @@ import { UnitsModule } from './units/units.module';
 		}),
 		PrismaModule,
 		UnitsModule,
+		WorkTypesModule,
 	],
 	controllers: [AppController, HealthController],
 	providers: [AppService],

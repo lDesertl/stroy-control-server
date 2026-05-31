@@ -1,0 +1,26 @@
+meta {
+  name: update
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{baseUrl}}/work-types/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 019e7d83-a28a-7381-8dd3-3989db73195b
+}
+
+body:json {
+  {
+    "name": "test-1"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

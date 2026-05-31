@@ -11,6 +11,8 @@ import type { UpdateUnitDto } from "./dto/update-unit.dto";
 // biome-ignore lint/style/useImportType: не тип
 import { PrismaService } from "../prisma/prisma.service";
 import { Prisma } from "../../generated/prisma/client";
+import { UNIT_ERROR_MESSAGES } from "./units.constants";
+import { PRISMA_ERROR_CODES } from "src/common/prisma.constants";
 
 @Injectable()
 export class UnitsService {
@@ -26,12 +28,14 @@ export class UnitsService {
 		} catch (error) {
 			if (
 				error instanceof Prisma.PrismaClientKnownRequestError &&
-				error.code === "P2002"
+				error.code === PRISMA_ERROR_CODES.UNIQUE_CONSTRAINT_VIOLATION
 			) {
-				throw new ConflictException("Юнит с таким именем уже существует");
+				throw new ConflictException(UNIT_ERROR_MESSAGES.UNIT_ALREADY_EXISTS);
 			}
-			this.logger.error("Ошибка при создании юнита:", error.stack);
-			throw new InternalServerErrorException("Ошибка при создании юнита");
+			this.logger.error(UNIT_ERROR_MESSAGES.UNIT_CREATION_FAILED, error);
+			throw new InternalServerErrorException(
+				UNIT_ERROR_MESSAGES.UNIT_CREATION_FAILED,
+			);
 		}
 	}
 
@@ -40,8 +44,10 @@ export class UnitsService {
 			const units = await this.prisma.unit.findMany();
 			return units;
 		} catch (error) {
-			this.logger.error("Ошибка при получении юнитов:", error.stack);
-			throw new InternalServerErrorException("Ошибка при получении юнитов");
+			this.logger.error(UNIT_ERROR_MESSAGES.UNITS_FETCH_FAILED, error);
+			throw new InternalServerErrorException(
+				UNIT_ERROR_MESSAGES.UNITS_FETCH_FAILED,
+			);
 		}
 	}
 
@@ -54,9 +60,9 @@ export class UnitsService {
 			});
 			return units;
 		} catch (error) {
-			this.logger.error("Ошибка при получении активных юнитов:", error.stack);
+			this.logger.error(UNIT_ERROR_MESSAGES.UNITS_FETCH_FAILED, error);
 			throw new InternalServerErrorException(
-				"Ошибка при получении активных юнитов",
+				UNIT_ERROR_MESSAGES.UNITS_FETCH_FAILED,
 			);
 		}
 	}
@@ -72,12 +78,14 @@ export class UnitsService {
 		} catch (error) {
 			if (
 				error instanceof Prisma.PrismaClientKnownRequestError &&
-				error.code === "P2025"
+				error.code === PRISMA_ERROR_CODES.NOT_FOUND
 			) {
-				throw new NotFoundException("Юнит не найден");
+				throw new NotFoundException(UNIT_ERROR_MESSAGES.UNIT_NOT_FOUND);
 			}
-			this.logger.error("Ошибка при получении юнита:", error.stack);
-			throw new InternalServerErrorException("Ошибка при получении юнита");
+			this.logger.error(UNIT_ERROR_MESSAGES.UNIT_RETRIEVAL_FAILED, error);
+			throw new InternalServerErrorException(
+				UNIT_ERROR_MESSAGES.UNIT_RETRIEVAL_FAILED,
+			);
 		}
 	}
 
@@ -92,15 +100,17 @@ export class UnitsService {
 			return unit;
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				if (error.code === "P2025") {
-					throw new NotFoundException("Юнит не найден");
+				if (error.code === PRISMA_ERROR_CODES.NOT_FOUND) {
+					throw new NotFoundException(UNIT_ERROR_MESSAGES.UNIT_NOT_FOUND);
 				}
-				if (error.code === "P2002") {
-					throw new ConflictException("Юнит с таким именем уже существует");
+				if (error.code === PRISMA_ERROR_CODES.UNIQUE_CONSTRAINT_VIOLATION) {
+					throw new ConflictException(UNIT_ERROR_MESSAGES.UNIT_ALREADY_EXISTS);
 				}
 			}
-			this.logger.error("Ошибка при обновлении юнита:", error.stack);
-			throw new InternalServerErrorException("Ошибка при обновлении юнита");
+			this.logger.error(UNIT_ERROR_MESSAGES.UNIT_UPDATE_FAILED, error);
+			throw new InternalServerErrorException(
+				UNIT_ERROR_MESSAGES.UNIT_UPDATE_FAILED,
+			);
 		}
 	}
 
@@ -114,10 +124,12 @@ export class UnitsService {
 			return unit;
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				if (error.code === "P2025") {
-					throw new NotFoundException("Юнит не найден");
+				if (error.code === PRISMA_ERROR_CODES.NOT_FOUND) {
+					throw new NotFoundException(UNIT_ERROR_MESSAGES.UNIT_NOT_FOUND);
 				}
-				if (error.code === "P2003") {
+				if (
+					error.code === PRISMA_ERROR_CODES.FOREIGN_KEY_CONSTRAINT_VIOLATION
+				) {
 					try {
 						const unit = await this.prisma.unit.update({
 							where: {
@@ -130,17 +142,19 @@ export class UnitsService {
 						return unit;
 					} catch (deactivateError) {
 						this.logger.error(
-							"Ошибка при деактивации юнита:",
-							deactivateError.stack,
+							UNIT_ERROR_MESSAGES.UNIT_DEACTIVATION_FAILED,
+							deactivateError,
 						);
 						throw new InternalServerErrorException(
-							"Ошибка при деактивации юнита",
+							UNIT_ERROR_MESSAGES.UNIT_DEACTIVATION_FAILED,
 						);
 					}
 				}
 			}
-			this.logger.error("Ошибка при удалении юнита:", error.stack);
-			throw new InternalServerErrorException("Ошибка при удалении юнита");
+			this.logger.error(UNIT_ERROR_MESSAGES.UNIT_DELETION_FAILED, error);
+			throw new InternalServerErrorException(
+				UNIT_ERROR_MESSAGES.UNIT_DELETION_FAILED,
+			);
 		}
 	}
 }
