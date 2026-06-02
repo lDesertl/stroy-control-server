@@ -29,16 +29,16 @@ pnpm run db:up
 pnpm install
 ```
 
-#### 3) Засеять базу демо-данными
-
-```bash
-pnpm run db:seed
-```
-
 #### 4) Применить миграции и запустить сервер
 
 ```bash
 pnpm run start:dev
+```
+
+#### 3) Засеять базу демо-данными
+
+```bash
+pnpm run db:seed
 ```
 
 Сервер поднимется на `http://localhost:3000`
