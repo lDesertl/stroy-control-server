@@ -55,7 +55,10 @@ export class UnitsController {
 	}
 
 	@Delete(":id")
-	@SerializeOptions({ type: UnitRemoveResponseDto, excludeExtraneousValues: true })
+	@SerializeOptions({
+		type: UnitRemoveResponseDto,
+		excludeExtraneousValues: true,
+	})
 	remove(
 		@Param("id", ParseUUIDPipe) id: string,
 	): Promise<UnitRemoveResponseDto> {

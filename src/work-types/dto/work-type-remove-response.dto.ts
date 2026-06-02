@@ -10,4 +10,3 @@ export class WorkTypeRemoveResponseDto {
 	@Type(() => WorkTypeResponseDto)
 	data: WorkTypeResponseDto;
 }
-
