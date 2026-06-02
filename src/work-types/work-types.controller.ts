@@ -17,6 +17,7 @@ import { WorkTypesService } from "./work-types.service";
 import { CreateWorkTypeDto } from "./dto/create-work-type.dto";
 import { UpdateWorkTypeDto } from "./dto/update-work-type.dto";
 import { WorkTypeResponseDto } from "./dto/work-type-response.dto";
+import { WorkTypeRemoveResponseDto } from "./dto/work-type-remove-response.dto";
 // biome-ignore-end lint/style/useImportType: не типы
 
 @Controller("work-types")
@@ -58,7 +59,13 @@ export class WorkTypesController {
 	}
 
 	@Delete(":id")
-	remove(@Param("id", ParseUUIDPipe) id: string): Promise<WorkTypeResponseDto> {
+	@SerializeOptions({
+		type: WorkTypeRemoveResponseDto,
+		excludeExtraneousValues: true,
+	})
+	remove(
+		@Param("id", ParseUUIDPipe) id: string,
+	): Promise<WorkTypeRemoveResponseDto> {
 		return this.workTypesService.remove(id);
 	}
 }

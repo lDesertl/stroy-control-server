@@ -6,6 +6,7 @@ import {
 	Patch,
 	Param,
 	Delete,
+	Query,
 	UseInterceptors,
 	ClassSerializerInterceptor,
 	SerializeOptions,
@@ -17,6 +18,8 @@ import { WorkLogEntriesService } from "./work-log-entries.service";
 import { CreateWorkLogEntryDto } from "./dto/create-work-log-entry.dto";
 import { UpdateWorkLogEntryDto } from "./dto/update-work-log-entry.dto";
 import { WorkLogEntryResponseDto } from "./dto/work-log-entry-response.dto";
+import { GetWorkLogEntriesQueryDto } from "./dto/get-work-log-entries.query.dto";
+import { WorkLogEntriesListResponseDto } from "./dto/work-log-entries-list-response.dto";
 // biome-ignore-end lint/style/useImportType: не типы
 
 @Controller("work-log-entries")
@@ -36,8 +39,14 @@ export class WorkLogEntriesController {
 	}
 
 	@Get()
-	findAll(): Promise<WorkLogEntryResponseDto[]> {
-		return this.workLogEntriesService.findAll();
+	@SerializeOptions({
+		type: WorkLogEntriesListResponseDto,
+		excludeExtraneousValues: true,
+	})
+	findAll(
+		@Query() query: GetWorkLogEntriesQueryDto,
+	): Promise<WorkLogEntriesListResponseDto> {
+		return this.workLogEntriesService.findAll(query);
 	}
 
 	@Get(":id")

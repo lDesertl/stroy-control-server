@@ -144,7 +144,7 @@ export class WorkTypesService {
 					id,
 				},
 			});
-			return workType;
+			return { action: "deleted" as const, data: workType };
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError) {
 				if (error.code === PRISMA_ERROR_CODES.NOT_FOUND) {
@@ -164,7 +164,7 @@ export class WorkTypesService {
 								isActive: false,
 							},
 						});
-						return workType;
+						return { action: "deactivated" as const, data: workType };
 					} catch (deactivateError) {
 						this.logger.error(
 							WORK_TYPE_ERROR_MESSAGES.WORK_TYPE_DEACTIVATION_FAILED,

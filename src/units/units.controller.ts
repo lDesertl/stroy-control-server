@@ -17,6 +17,7 @@ import { UnitsService } from "./units.service";
 import { UpdateUnitDto } from "./dto/update-unit.dto";
 import { CreateUnitDto } from "./dto/create-unit.dto";
 import { UnitResponseDto } from "./dto/unit-response.dto";
+import { UnitRemoveResponseDto } from "./dto/unit-remove-response.dto";
 // biome-ignore-end lint/style/useImportType: не типы
 
 @Controller("units")
@@ -54,7 +55,10 @@ export class UnitsController {
 	}
 
 	@Delete(":id")
-	remove(@Param("id", ParseUUIDPipe) id: string): Promise<UnitResponseDto> {
+	@SerializeOptions({ type: UnitRemoveResponseDto, excludeExtraneousValues: true })
+	remove(
+		@Param("id", ParseUUIDPipe) id: string,
+	): Promise<UnitRemoveResponseDto> {
 		return this.unitsService.remove(id);
 	}
 }

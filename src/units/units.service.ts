@@ -121,7 +121,7 @@ export class UnitsService {
 					id,
 				},
 			});
-			return unit;
+			return { action: "deleted" as const, data: unit };
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError) {
 				if (error.code === PRISMA_ERROR_CODES.NOT_FOUND) {
@@ -139,7 +139,7 @@ export class UnitsService {
 								isActive: false,
 							},
 						});
-						return unit;
+						return { action: "deactivated" as const, data: unit };
 					} catch (deactivateError) {
 						this.logger.error(
 							UNIT_ERROR_MESSAGES.UNIT_DEACTIVATION_FAILED,
